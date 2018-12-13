@@ -3,10 +3,10 @@ import { Fade } from 'react-reveal';
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../actions';
-import './SpeechWithTitle.css';
+import './Message.css';
 
 
-class SpeechWithTitle extends React.Component {
+class Message extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,11 +87,12 @@ class SpeechWithTitle extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => (
-  bindActionCreators({ cleanSpeech: actionCreators.cleanSpeech }, dispatch)
+  bindActionCreators({
+    cleanSpeech: actionCreators.cleanSpeech
+  }, dispatch)
 );
-
 
 export default compose(
   connect(null, mapDispatchToProps),
-)(SpeechWithTitle);
+)(Message);
 

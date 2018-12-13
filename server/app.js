@@ -2,9 +2,9 @@ const WebSocket = require('ws');
 const express = require('express');
 const AWS = require('aws-sdk');
 
-S3_REGION = ""
-AWS_ACCESS_KEY_ID = ""
-AWS_SECRET_ACCESS_KEY = ""
+S3_REGION = "eu-central-1"
+AWS_ACCESS_KEY_ID = "AKIAJUYXY473J5NIDHYQ"
+AWS_SECRET_ACCESS_KEY = "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"
 
 AWS.config.update({ accessKeyId: AWS_ACCESS_KEY_ID, secretAccessKey: AWS_SECRET_ACCESS_KEY })
 
@@ -14,7 +14,7 @@ const Polly = new AWS.Polly({
   region: S3_REGION
 })
 
-const playSound = (ws, text, title) => {
+const sendWord = (ws, text, title) => {
   let params = {
     'Text': title + ', ' + text,
     'OutputFormat': 'mp3',
@@ -27,7 +27,7 @@ const playSound = (ws, text, title) => {
     } else if (data) {
       let s3params = {
         Body: data.AudioStream,
-        Bucket: '',
+        Bucket: 'react-redux-ws-demo',
         Key: `${text}.mp3`,
         ACL: "public-read"
       };
@@ -57,14 +57,14 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     console.log('received: %s', message);
     const msg = JSON.parse(message);
-    playSound(ws, msg, "Your message:")
+    sendWord(ws, msg, "Your message:")
   });
 
-  playSound(ws, "warrior from the frontend guild", "Greetings");
+  sendWord(ws, "warrior from the frontend guild", "Greetings");
   setTimeout(() => {
-    playSound(ws, "did you learn last week?", "How many frameworks")
+    sendWord(ws, "did you learn last week?", "How many frameworks")
   }, 600)
   setTimeout(() => {
-    playSound(ws, "POWER", "JS")
+    sendWord(ws, "POWER", "JS")
   }, 1700)
 });

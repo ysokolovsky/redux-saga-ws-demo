@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { compose, bindActionCreators } from 'redux';
-import SpeechScreen from './components/SpeechScreen';
+import Screen from './components/Screen';
 import { actionCreators } from './actions';
 import { connect } from 'react-redux';
 import './App.css';
 
 
 export class App extends Component {
-
-  state = {
-    message: ''
-  }
 
   componentWillMount() {
     const socket = new ReconnectingWebSocket('ws://127.0.0.1:8765');
@@ -23,31 +19,10 @@ export class App extends Component {
     });
   }
 
-  handleChange = (event) => {
-    this.setState({message: event.target.value});
-  }
-
-  sendMsg = () => {
-    if (this.state.message) {
-      this.props.send(this.state.message);
-      this.setState({message: ''});
-    }
-  }
-
   render() {
     return (
       <div className="App">
-        <SpeechScreen />
-        <div className="send">
-          <input
-            value={this.state.message}
-            onChange={this.handleChange}
-          />
-          <button
-            className="button"
-            onClick={this.sendMsg}
-          >Send</button>
-      </div>
+        <Screen />
       </div>
   ); 
   }
@@ -55,8 +30,7 @@ export class App extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    connect: actionCreators.socketConnect,
-    send: actionCreators.socketSend,
+    connect: actionCreators.socketConnect
   }, dispatch);
 }
 
